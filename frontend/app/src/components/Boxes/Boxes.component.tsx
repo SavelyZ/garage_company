@@ -3,53 +3,56 @@ import axios from 'axios';
 import './Boxes.styles.css';
 import { Link } from "react-router-dom";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Button } from "@mui/material";
+import '../../App.css'
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First name', width: 130 },
-    { field: 'lastName', headerName: 'Last name', width: 130 },
-    {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 90,
-    },
-    {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    },
-  ];
-  
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    { field: 'id', headerName: 'id', width: 70},
+    { field: 'FIO_Vladeltsa', headerName: 'FIO', width: 70 },
+    { field: 'Kod_Box', headerName: 'Kod box', width: 130 },
+    { field: 'Kod_Car', headerName: 'Kod car', width: 130 },
+    { field: 'Marka_Avto', headerName: 'Marka', width: 130 },
+    { field: 'Model_Avto', headerName: 'Model', width: 130 },
+    { field: 'Status_Zanyatosti', headerName: 'Status', width: 130 },
+    { field: 'Telefon_Vladeltsa', headerName: 'Phone', width: 130 },
+
   ];
   
   export default function Boxes() {
+  type dataBoxesType = {}[];
+  const [data, setData] = useState<dataBoxesType>([{id:0, FIO:''}]);
+
+  useEffect(()=>{
+    axios.get('http://localhost:8081/get-boxes')
+    .then(res=>{
+        let index = 0;
+        const _data = res.data.map((e:{})=>{index += 1; return {id: index,...e}}) 
+        console.log(_data);
+        setData(_data);
+    })
+    .catch(err=>console.log(err))
+    },[])
+
+    useEffect(()=>{console.log(data)},[data])
+
     return (
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 400, width: '100%' }} >
         <DataGrid
-          rows={rows}
+          rows={data}
           columns={columns}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+              paginationModel: { page: 0, pageSize: 3 },
             },
           }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[3, 10]}
           checkboxSelection
         />
+        <div className="buttonContainer"> 
+          <Button variant="contained">New client</Button>
+          <Button variant="contained">New box</Button>
+          <Button variant="contained">New Mark</Button>
+        </div>
       </div>
     );
   }
