@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import axios from 'axios';
 import './Boxes.styles.css';
 import { Link } from "react-router-dom";
@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
 
   ];
   
-  export default function Boxes() {
+function Boxes() {
   type dataBoxesType = {}[];
   const [data, setData] = useState<dataBoxesType>([{id:0, FIO:''}]);
 
@@ -36,8 +36,15 @@ const columns: GridColDef[] = [
     useEffect(()=>{console.log(data)},[data])
 
     return (
-      <div style={{ height: 400, width: '100%' }} >
-        <DataGrid
+      <div className="base-container" >
+        <div className="base-conatainer__base-body base-container__base-body__bordered">
+          <div className="boxes-container">
+          <div className="button-container">
+          <Button variant="contained">New client</Button>
+          <Button variant="contained">New box</Button>
+          <Button variant="contained">New Mark</Button>
+        </div>
+          <DataGrid
           rows={data}
           columns={columns}
           initialState={{
@@ -48,12 +55,11 @@ const columns: GridColDef[] = [
           pageSizeOptions={[3, 10]}
           checkboxSelection
         />
-        <div className="buttonContainer"> 
-          <Button variant="contained">New client</Button>
-          <Button variant="contained">New box</Button>
-          <Button variant="contained">New Mark</Button>
+          </div>
         </div>
       </div>
     );
-  }
+  };
+
+  export default memo(Boxes);
   

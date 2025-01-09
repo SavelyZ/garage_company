@@ -1,0 +1,10 @@
+.header-container {
+    background-color: #add6ff;
+    border-bottom: solid 0.5px rgb(66, 65, 65);
+}
+
+.header__button-container{
+    Button {
+        margin-left: 10px;
+    }
+}

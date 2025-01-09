@@ -1,7 +1,3 @@
-.buttonContainer{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+.boxes-container {
+    margin-top: 10px;
 }
